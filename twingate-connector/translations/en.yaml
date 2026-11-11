@@ -1,0 +1,30 @@
+configuration:
+  network:
+    name: Network
+    description: Twingate network slug (the subdomain in https://<slug>.twingate.com).
+  access_token:
+    name: Access token
+    description: Connector access token from the Twingate Admin Console (Manual deploy).
+  refresh_token:
+    name: Refresh token
+    description: Connector refresh token from the Twingate Admin Console (Manual deploy).
+  log_level:
+    name: Log level
+    description: Verbosity of Twingate Connector logs.
+  log_analytics:
+    name: Log analytics
+    description: Include Connector analytics / network events in the add-on logs.
+  dns:
+    name: DNS server
+    description: Optional DNS server for the Connector (leave empty for the Remote Network default).
+  health_interval:
+    name: Health interval
+    description: Seconds between Twingate controller reachability checks.
+  restart_delay:
+    name: Restart delay
+    description: Initial delay in seconds before restarting a crashed Connector.
+  max_restart_delay:
+    name: Max restart delay
+    description: Maximum backoff delay in seconds between Connector restarts.
+network:
+  8099/tcp: Health status page (optional host port; Ingress is preferred)
