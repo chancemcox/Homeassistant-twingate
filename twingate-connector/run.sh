@@ -5,7 +5,6 @@ set -euo pipefail
 STATUS_FILE="/data/twingate-status.json"
 CONFIG_FILE="/etc/twingate/connector.conf"
 CONNECTOR_BIN="/usr/bin/twingate-connector"
-HEALTH_PORT=8099
 
 CONNECTOR_PID=""
 HEALTH_PID=""
@@ -141,6 +140,13 @@ chmod 0600 "${CONFIG_FILE}"
 mkdir -p /data
 STARTED_AT="$(iso_now)"
 write_status "false" "false" "starting health endpoint"
+
+# Host-network apps must use the Supervisor-assigned ingress port.
+HEALTH_PORT="$(bashio::addon.ingress_port)"
+if ! [[ "${HEALTH_PORT}" =~ ^[0-9]+$ ]] || [[ "${HEALTH_PORT}" -le 0 ]]; then
+    bashio::log.fatal "Could not determine ingress port from Supervisor (got '${HEALTH_PORT}')."
+    exit 1
+fi
 
 export TWINGATE_STATUS_FILE="${STATUS_FILE}"
 export TWINGATE_HEALTH_PORT="${HEALTH_PORT}"

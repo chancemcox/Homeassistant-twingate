@@ -12,7 +12,7 @@ from urllib.error import URLError, HTTPError
 from urllib.request import urlopen
 
 STATUS_FILE = Path(os.environ.get("TWINGATE_STATUS_FILE", "/data/twingate-status.json"))
-PORT = int(os.environ.get("TWINGATE_HEALTH_PORT", "8099"))
+PORT = int(os.environ.get("TWINGATE_HEALTH_PORT", "0"))
 NETWORK = os.environ.get("TWINGATE_NETWORK", "").strip()
 
 
@@ -193,6 +193,11 @@ class Handler(BaseHTTPRequestHandler):
 
 
 def main() -> None:
+    if PORT <= 0:
+        raise SystemExit(
+            "TWINGATE_HEALTH_PORT must be set to the Supervisor-assigned ingress port"
+        )
+
     # Warm controller reachability once so the first page render is useful.
     status = read_status()
     status["controller_reachable"] = controller_probe()

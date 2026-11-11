@@ -35,9 +35,9 @@ Official walkthrough: [Getting started with Home Assistant](https://www.twingate
 | --- | --- |
 | Process watchdog | If `twingate-connector` exits, the add-on restarts it with exponential backoff |
 | Controller probe | Every `health_interval` seconds, probes `https://<network>.twingate.com/api/v1/public_keys` |
-| Supervisor watchdog | `GET /health` must succeed or Home Assistant restarts the add-on container |
 | Start on boot | `boot: auto` so the Connector returns after host reboots |
 | Host network | Uses the host network stack so the Connector can reach LAN devices and peer-to-peer peers |
+| Dynamic Ingress port | On host networking, Supervisor assigns a free high port so the status UI does not collide with other apps (for example HomeScan on 8099) |
 
 Open the add-on UI (Ingress) for a live status page, or call `/status` for JSON.
 
@@ -75,6 +75,11 @@ Each Connector’s tokens are unique. Do not run two Connectors with the same to
 
 - Verify Resources point at addresses the Home Assistant host can route to
 - Prefer hostnames/IPs on the LAN; this add-on runs with host networking for that reason
+
+**Add-on UI shows another app (e.g. HomeScan)**
+
+- Update to add-on version **1.0.1+** (uses a dynamic Ingress port on host networking)
+- Restart the Twingate Connector add-on after updating
 
 **Add-on keeps restarting**
 

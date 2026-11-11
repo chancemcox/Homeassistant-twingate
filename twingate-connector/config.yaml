@@ -1,6 +1,6 @@
 name: Twingate Connector
 description: Keeps a Twingate Connector online so you can reach your home network securely
-version: "1.0.0"
+version: "1.0.1"
 slug: twingate_connector
 url: https://github.com/chancemcox/Homeassistant-twingate/tree/main/twingate-connector
 init: false
@@ -16,14 +16,11 @@ privileged:
   - NET_ADMIN
   - NET_RAW
 ingress: true
-ingress_port: 8099
+# Dynamic port: host_network shares the host stack, so a fixed port (e.g. 8099)
+# collides with other apps such as HomeScan. Supervisor assigns 62000-65500.
+ingress_port: 0
 panel_icon: mdi:shield-lock-outline
 panel_title: Twingate
-watchdog: http://[HOST]:[PORT:8099]/health
-ports:
-  8099/tcp: null
-ports_description:
-  8099/tcp: Health status page (optional; ingress is preferred)
 options:
   network: ""
   access_token: ""

@@ -26,5 +26,3 @@ configuration:
   max_restart_delay:
     name: Max restart delay
     description: Maximum backoff delay in seconds between Connector restarts.
-network:
-  8099/tcp: Health status page (optional host port; Ingress is preferred)
